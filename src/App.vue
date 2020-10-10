@@ -17,6 +17,7 @@
             <div class="view">
               <input class="toggle" type="checkbox" v-model="todo.completed" />
               <label>{{ todo.title }}</label>
+              <button class="destroy" v-on:click="removeTodo(todo)"></button>
             </div>
           </li>
         </ul>
@@ -47,6 +48,9 @@ export default {
         completed: false,
       });
       this.newTodo = "";
+    },
+    removeTodo(todo) {
+      this.todos.splice(this.todos.indexOf(todo), 1);
     },
   },
 };
