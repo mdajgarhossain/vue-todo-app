@@ -13,12 +13,23 @@
       </header>
       <section class="main">
         <ul class="todo-list">
-          <li v-for="todo in todos" v-bind:key="todo.id" class="todo">
+          <li
+            v-for="todo in todos"
+            v-bind:key="todo.id"
+            v-bind:class="{ editing: todo == editedTodo }"
+          >
             <div class="view">
               <input class="toggle" type="checkbox" v-model="todo.completed" />
-              <label>{{ todo.title }}</label>
+              <label v-on:dblclick="editTodo(todo)">{{ todo.title }}</label>
               <button class="destroy" v-on:click="removeTodo(todo)"></button>
             </div>
+            <input
+              class="edit"
+              type="text"
+              v-model="todo.title"
+              v-on:blur="doneEdit(todo)"
+              v-on:keyup.enter="doneEdit(todo)"
+            />
           </li>
         </ul>
         <input class="toggle-all" id="toggle-all" type="checkbox" />
@@ -38,6 +49,7 @@ export default {
     return {
       newTodo: "",
       todos: [],
+      editedTodo: null,
     };
   },
   created() {
@@ -56,6 +68,20 @@ export default {
     },
     removeTodo(todo) {
       this.todos.splice(this.todos.indexOf(todo), 1);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.todos));
+    },
+    editTodo(todo) {
+      this.editedTodo = todo;
+    },
+    doneEdit(todo) {
+      if (!this.editedTodo) {
+        return;
+      }
+      this.editedTodo = null;
+      todo.title = todo.title.trim();
+      if (!todo.title) {
+        this.removeTodo(todo);
+      }
       localStorage.setItem(STORAGE_KEY, JSON.stringify(this.todos));
     },
   },
