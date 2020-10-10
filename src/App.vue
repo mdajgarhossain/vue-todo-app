@@ -31,13 +31,17 @@
 </template>
 
 <script>
+const STORAGE_KEY = "todo-storage";
 export default {
   name: "App",
   data() {
     return {
       newTodo: "",
-      todos: [{ id: 0, title: "My todo", completed: false }],
+      todos: [],
     };
+  },
+  created() {
+    this.todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
   },
   methods: {
     addTodo() {
@@ -48,9 +52,11 @@ export default {
         completed: false,
       });
       this.newTodo = "";
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.todos));
     },
     removeTodo(todo) {
       this.todos.splice(this.todos.indexOf(todo), 1);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.todos));
     },
   },
 };
