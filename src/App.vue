@@ -16,7 +16,10 @@
           <li
             v-for="todo in todos"
             v-bind:key="todo.id"
-            v-bind:class="{ editing: todo == editedTodo }"
+            v-bind:class="{
+              completed: todo.completed,
+              editing: todo == editedTodo,
+            }"
           >
             <div class="view">
               <input class="toggle" type="checkbox" v-model="todo.completed" />
