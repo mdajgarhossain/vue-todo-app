@@ -14,7 +14,7 @@
       <section class="main">
         <ul class="todo-list">
           <li
-            v-for="todo in todos"
+            v-for="todo in filterdTodos"
             v-bind:key="todo.id"
             v-bind:class="{
               completed: todo.completed,
@@ -39,7 +39,34 @@
         <label for="toggle-all">Mark all as complete</label>
         <ul class="todo-list"></ul>
       </section>
-      <footer class="footer"></footer>
+      <footer class="footer">
+        <ul class="filters">
+          <li>
+            <a
+              href="#"
+              v-on:click.prevent="visibility = 'all'"
+              :class="{ selected: visibility == 'all' }"
+              >All</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              v-on:click.prevent="visibility = 'active'"
+              :class="{ selected: visibility == 'active' }"
+              >Active</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              v-on:click.prevent="visibility = 'completed'"
+              :class="{ selected: visibility == 'completed' }"
+              >Completed</a
+            >
+          </li>
+        </ul>
+      </footer>
     </section>
   </div>
 </template>
@@ -53,19 +80,37 @@ export default {
       newTodo: "",
       todos: [],
       editedTodo: null,
+      visibility: "all",
     };
   },
   created() {
     this.todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
   },
+  computed: {
+    filterdTodos() {
+      //all, active, completed
+      if (this.visibility === "all") {
+        return this.todos;
+      } else if (this.visibility === "active") {
+        return this.todos.filter((todo) => !todo.completed);
+      } else {
+        return this.todos.filter((todo) => todo.completed);
+      }
+    },
+    saveablData() {
+      return {
+        // id: this.todos.length,
+        title: this.newTodo,
+        completed: false,
+      };
+    },
+  },
   methods: {
     addTodo() {
       console.log(this.newTodo, this.todos);
-      this.todos.push({
-        id: this.todos.length,
-        title: this.newTodo,
-        completed: false,
-      });
+      if (this.newTodo) {
+        this.todos.push(this.saveablData);
+      }
       this.newTodo = "";
       localStorage.setItem(STORAGE_KEY, JSON.stringify(this.todos));
     },
