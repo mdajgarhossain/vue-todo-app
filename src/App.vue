@@ -10,6 +10,7 @@
           v-model="newTodo"
           autofocus
         />
+        <span>{{ newTodo }}</span>
       </header>
       <section class="main">
         <ul class="todo-list">
@@ -109,6 +110,17 @@ export default {
     addTodo() {
       console.log(this.newTodo, this.todos);
       if (this.newTodo) {
+        if (this.todos.length) {
+          const sameTodo = this.todos.find(
+            (todo) => todo.title == this.newTodo
+          );
+          if (sameTodo) {
+            alert(
+              `${sameTodo.title} is already exist! Please enter another item.`
+            );
+            return;
+          }
+        }
         this.todos.push(this.saveablData);
       }
       this.newTodo = "";
