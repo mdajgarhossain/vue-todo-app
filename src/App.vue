@@ -127,8 +127,13 @@ export default {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(this.todos));
     },
     removeTodo(todo) {
-      this.todos.splice(this.todos.indexOf(todo), 1);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.todos));
+      const returnedValue = confirm("Are you sure to delete this item?");
+      if (returnedValue == true) {
+        this.todos.splice(this.todos.indexOf(todo), 1);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(this.todos));
+      } else {
+        return;
+      }
     },
     editTodo(todo) {
       this.editedTodo = todo;
