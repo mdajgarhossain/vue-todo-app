@@ -219,6 +219,10 @@ label,
   margin-bottom: -1px;
 }
 
+.header .warning {
+  color: red;
+}
+
 .footer {
   color: #777;
   padding: 10px 15px;

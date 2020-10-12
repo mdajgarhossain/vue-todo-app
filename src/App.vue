@@ -6,11 +6,13 @@
         <input
           class="new-todo"
           placeholder="What needs to be done?"
-          v-on:keyup.enter="addTodo"
+          @blur="addTodo"
+          @keyup.enter="addTodo"
           v-model="newTodo"
           autofocus
         />
-        <span>{{ newTodo }}</span>
+        <p v-show="!error">{{ newTodo }}</p>
+        <p v-show="error" class="warning">This item is already exist</p>
       </header>
       <section class="main">
         <ul class="todo-list">
@@ -82,6 +84,7 @@ export default {
       todos: [],
       editedTodo: null,
       visibility: "all",
+      error: false,
     };
   },
   created() {
@@ -106,18 +109,26 @@ export default {
       };
     },
   },
+  watch: {
+    newTodo: {
+      deep: true,
+      handler(n, o) {
+        if (this.error && o != n) {
+          this.error = false;
+        }
+      },
+    },
+  },
   methods: {
     addTodo() {
-      console.log(this.newTodo, this.todos);
+      //console.log(this.newTodo, this.todos);
       if (this.newTodo) {
         if (this.todos.length) {
           const sameTodo = this.todos.find(
-            (todo) => todo.title == this.newTodo
+            (todo) => todo.title.toUpperCase() == this.newTodo.toUpperCase()
           );
           if (sameTodo) {
-            alert(
-              `${sameTodo.title} is already exist! Please enter another item.`
-            );
+            this.error = true;
             return;
           }
         }
