@@ -1,6 +1,8 @@
 <template>
   <div id="app">
     <section class="todoapp">
+      <input type="text" v-model="search" placeholder="Search here" />
+      <span>{{ search }}</span>
       <header class="header">
         <h1>todos</h1>
         <input
@@ -85,6 +87,7 @@ export default {
       editedTodo: null,
       visibility: "all",
       error: false,
+      search: "",
     };
   },
   created() {
@@ -118,10 +121,24 @@ export default {
         }
       },
     },
+    search: {
+      deep: true,
+      handler(n,o) {
+        if (o != n) {
+          this.todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+        }
+        this.handleSearch();
+      },
+    },
   },
   methods: {
+    handleSearch() {
+      this.todos = this.todos.filter((todo) => {
+        console.log(todo);
+        return todo.title.match(this.search);
+      });
+    },
     addTodo() {
-      //console.log(this.newTodo, this.todos);
       if (this.newTodo) {
         if (this.todos.length) {
           const sameTodo = this.todos.find(
@@ -137,6 +154,7 @@ export default {
       this.newTodo = "";
       localStorage.setItem(STORAGE_KEY, JSON.stringify(this.todos));
     },
+
     removeTodo(todo) {
       this.todos.splice(this.todos.indexOf(todo), 1);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(this.todos));
