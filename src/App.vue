@@ -123,20 +123,30 @@ export default {
     },
     search: {
       deep: true,
-      handler(n,o) {
+      handler(n, o) {
         if (o != n) {
-          this.todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+          //this.todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+          this.handleSearch();
         }
-        this.handleSearch();
+        // this.handleSearch();
       },
     },
+    // todos: {
+    //   deep: true,
+    //   handler(newValue) {
+    //     console.log(newValue);
+    //     this.saveTodoItems();
+    //   }
+    // }
   },
   methods: {
     handleSearch() {
-      this.todos = this.todos.filter((todo) => {
-        console.log(todo);
-        return todo.title.match(this.search);
-      });
+      let todos = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      if (todos && todos.length) {
+        this.todos = todos.filter((todo) => {
+          return todo.title.match(this.search);
+        });
+      }
     },
     addTodo() {
       if (this.newTodo) {
@@ -149,10 +159,17 @@ export default {
             return;
           }
         }
-        this.todos.push(this.saveablData);
+        this.saveTodoItems();
+        //this.todos.push(this.saveablData);
       }
+    },
+
+    saveTodoItems() {
+      let todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      todos.push(this.saveablData);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+      this.todos = todos;
       this.newTodo = "";
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.todos));
     },
 
     removeTodo(todo) {
