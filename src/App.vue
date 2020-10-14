@@ -1,21 +1,15 @@
 <template>
   <div id="app">
     <section class="todoapp">
-      <input type="text" v-model="search" placeholder="Search here" />
-      <span>{{ search }}</span>
-      <header class="header">
-        <h1>todos</h1>
-        <input
-          class="new-todo"
-          placeholder="What needs to be done?"
-          @blur="addTodo"
-          @keyup.enter="addTodo"
-          v-model="newTodo"
-          autofocus
-        />
-        <p v-show="!error">{{ newTodo }}</p>
-        <p v-show="error" class="warning">This item is already exist</p>
-      </header>
+      <!-- <input type="text" v-model="search" placeholder="Search here" />
+      <span>{{ search }}</span> -->
+
+      <Header
+        @set-todos="setUpatedTodos"
+        :STORAGE_KEY="STORAGE_KEY"
+        :todos="todos"
+      />
+
       <section class="main">
         <ul class="todo-list">
           <li
@@ -77,21 +71,25 @@
 </template>
 
 <script>
-const STORAGE_KEY = "todo-storage";
+import Header from "./components/Header";
+
+// const STORAGE_KEY = "todo-storage";
 export default {
   name: "App",
+  components: {
+    Header,
+  },
   data() {
     return {
-      newTodo: "",
+      STORAGE_KEY: "todo-storage",
       todos: [],
       editedTodo: null,
       visibility: "all",
-      error: false,
       search: "",
     };
   },
   created() {
-    this.todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    this.todos = JSON.parse(localStorage.getItem(this.STORAGE_KEY) || "[]");
   },
   computed: {
     filterdTodos() {
@@ -104,23 +102,8 @@ export default {
         return this.todos.filter((todo) => todo.completed);
       }
     },
-    saveablData() {
-      return {
-        // id: this.todos.length,
-        title: this.newTodo,
-        completed: false,
-      };
-    },
   },
   watch: {
-    newTodo: {
-      deep: true,
-      handler(n, o) {
-        if (this.error && o != n) {
-          this.error = false;
-        }
-      },
-    },
     search: {
       deep: true,
       handler(n, o) {
@@ -133,48 +116,31 @@ export default {
     },
     // todos: {
     //   deep: true,
-    //   handler(newValue) {
-    //     console.log(newValue);
-    //     this.saveTodoItems();
-    //   }
-    // }
+    //   handler(n, o) {
+    //     // console.log(newValue);
+    //     if(o != n) {
+    //       this.saveTodoItems();
+    //     }
+
+    //   },
+    // },
   },
   methods: {
+    setUpatedTodos(todos) {
+      this.todos = [...todos];
+    },
     handleSearch() {
-      let todos = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      let todos = JSON.parse(localStorage.getItem(this.STORAGE_KEY));
       if (todos && todos.length) {
         this.todos = todos.filter((todo) => {
           return todo.title.match(this.search);
         });
       }
     },
-    addTodo() {
-      if (this.newTodo) {
-        if (this.todos.length) {
-          const sameTodo = this.todos.find(
-            (todo) => todo.title.toUpperCase() == this.newTodo.toUpperCase()
-          );
-          if (sameTodo) {
-            this.error = true;
-            return;
-          }
-        }
-        this.saveTodoItems();
-        //this.todos.push(this.saveablData);
-      }
-    },
-
-    saveTodoItems() {
-      let todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-      todos.push(this.saveablData);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
-      this.todos = todos;
-      this.newTodo = "";
-    },
 
     removeTodo(todo) {
       this.todos.splice(this.todos.indexOf(todo), 1);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.todos));
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.todos));
     },
     editTodo(todo) {
       this.editedTodo = todo;
@@ -188,7 +154,7 @@ export default {
       if (!todo.title) {
         this.removeTodo(todo);
       }
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.todos));
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.todos));
     },
   },
 };
