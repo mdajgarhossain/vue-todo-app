@@ -76,7 +76,7 @@ export default {
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(todos));
       //this.todos = todos;
       this.newTodo = "";
-      this.$emit("set-todos", todos);
+      this.$emit("save-todos", todos);
     },
   },
 };

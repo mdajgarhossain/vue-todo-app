@@ -5,39 +5,11 @@
       <span>{{ search }}</span> -->
 
       <Header
-        @set-todos="setUpatedTodos"
+        @save-todos="saveTodos"
         :STORAGE_KEY="STORAGE_KEY"
         :todos="todos"
       />
-
-      <section class="main">
-        <ul class="todo-list">
-          <li
-            v-for="todo in filterdTodos"
-            v-bind:key="todo.id"
-            v-bind:class="{
-              completed: todo.completed,
-              editing: todo == editedTodo,
-            }"
-          >
-            <div class="view">
-              <input class="toggle" type="checkbox" v-model="todo.completed" />
-              <label v-on:dblclick="editTodo(todo)">{{ todo.title }}</label>
-              <button class="destroy" v-on:click="removeTodo(todo)"></button>
-            </div>
-            <input
-              class="edit"
-              type="text"
-              v-model="todo.title"
-              v-on:blur="doneEdit(todo)"
-              v-on:keyup.enter="doneEdit(todo)"
-            />
-          </li>
-        </ul>
-        <input class="toggle-all" id="toggle-all" type="checkbox" />
-        <label for="toggle-all">Mark all as complete</label>
-        <ul class="todo-list"></ul>
-      </section>
+      <Todos :STORAGE_KEY="STORAGE_KEY" :todos="todos" />
       <footer class="footer">
         <ul class="filters">
           <li>
@@ -72,18 +44,19 @@
 
 <script>
 import Header from "./components/Header";
+import Todos from "./components/Todos";
 
 // const STORAGE_KEY = "todo-storage";
 export default {
   name: "App",
   components: {
     Header,
+    Todos,
   },
   data() {
     return {
       STORAGE_KEY: "todo-storage",
       todos: [],
-      editedTodo: null,
       visibility: "all",
       search: "",
     };
@@ -92,7 +65,7 @@ export default {
     this.todos = JSON.parse(localStorage.getItem(this.STORAGE_KEY) || "[]");
   },
   computed: {
-    filterdTodos() {
+    filteredTodos() {
       //all, active, completed
       if (this.visibility === "all") {
         return this.todos;
@@ -126,7 +99,7 @@ export default {
     // },
   },
   methods: {
-    setUpatedTodos(todos) {
+    saveTodos(todos) {
       this.todos = [...todos];
     },
     handleSearch() {
@@ -136,25 +109,6 @@ export default {
           return todo.title.match(this.search);
         });
       }
-    },
-
-    removeTodo(todo) {
-      this.todos.splice(this.todos.indexOf(todo), 1);
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.todos));
-    },
-    editTodo(todo) {
-      this.editedTodo = todo;
-    },
-    doneEdit(todo) {
-      if (!this.editedTodo) {
-        return;
-      }
-      this.editedTodo = null;
-      todo.title = todo.title.trim();
-      if (!todo.title) {
-        this.removeTodo(todo);
-      }
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.todos));
     },
   },
 };
