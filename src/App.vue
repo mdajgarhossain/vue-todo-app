@@ -4,12 +4,8 @@
       <!-- <input type="text" v-model="search" placeholder="Search here" />
       <span>{{ search }}</span> -->
 
-      <Header
-        @save-todos="saveTodos"
-        :STORAGE_KEY="STORAGE_KEY"
-        :todos="todos"
-      />
-      <Todos :STORAGE_KEY="STORAGE_KEY" :todos="todos" />
+      <Header @save-todos="saveTodos" :todos="todos" />
+      <Todos :todos="todos" />
       <footer class="footer">
         <ul class="filters">
           <li>
@@ -55,14 +51,13 @@ export default {
   },
   data() {
     return {
-      STORAGE_KEY: "todo-storage",
       todos: [],
       visibility: "all",
       search: "",
     };
   },
   created() {
-    this.todos = JSON.parse(localStorage.getItem(this.STORAGE_KEY) || "[]");
+    this.todos = JSON.parse(localStorage.getItem(this.$STORAGE_KEY) || "[]");
   },
   computed: {
     filteredTodos() {
@@ -103,7 +98,7 @@ export default {
       this.todos = [...todos];
     },
     handleSearch() {
-      let todos = JSON.parse(localStorage.getItem(this.STORAGE_KEY));
+      let todos = JSON.parse(localStorage.getItem(this.$STORAGE_KEY));
       if (todos && todos.length) {
         this.todos = todos.filter((todo) => {
           return todo.title.match(this.search);

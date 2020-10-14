@@ -30,10 +30,6 @@
 export default {
   name: "Todos",
   props: {
-    STORAGE_KEY: {
-      type: String,
-      default: "",
-    },
     todos: {
       type: Array,
       default: () => {
@@ -59,11 +55,11 @@ export default {
       if (!todo.title) {
         this.removeTodo(todo);
       }
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.todos));
+      localStorage.setItem(this.$STORAGE_KEY, JSON.stringify(this.todos));
     },
     removeTodo(todo) {
       this.todos.splice(this.todos.indexOf(todo), 1);
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.todos));
+      localStorage.setItem(this.$STORAGE_KEY, JSON.stringify(this.todos));
     },
   },
 };

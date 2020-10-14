@@ -18,10 +18,6 @@
 export default {
   name: "Header",
   props: {
-    STORAGE_KEY: {
-      type: String,
-      default: "",
-    },
     todos: {
       type: Array,
       default() {
@@ -71,9 +67,9 @@ export default {
       }
     },
     saveTodoItems() {
-      let todos = JSON.parse(localStorage.getItem(this.STORAGE_KEY) || "[]");
+      let todos = JSON.parse(localStorage.getItem(this.$STORAGE_KEY) || "[]");
       todos.push(this.saveablData);
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(todos));
+      localStorage.setItem(this.$STORAGE_KEY, JSON.stringify(todos));
       //this.todos = todos;
       this.newTodo = "";
       this.$emit("save-todos", todos);
