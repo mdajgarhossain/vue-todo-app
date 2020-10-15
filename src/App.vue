@@ -1,9 +1,7 @@
 <template>
   <div id="app">
     <section class="todoapp">
-      <!-- <input type="text" v-model="search" placeholder="Search here" />
-      <span>{{ search }}</span> -->
-
+      <Search @searchMatchedData="embedMatchedData" />
       <Header @save-todos="saveTodos" :todos="todos" />
       <Todos :todos="todos" :filteredTodos="filteredTodos" />
       <Footer @handleClick="checkVisibility" :todos="todos" />
@@ -15,6 +13,7 @@
 import Header from "./components/Header";
 import Todos from "./components/Todos";
 import Footer from "./components/Footer";
+import Search from "./components/Search";
 
 export default {
   name: "App",
@@ -22,11 +21,11 @@ export default {
     Header,
     Todos,
     Footer,
+    Search,
   },
   data() {
     return {
       todos: [],
-      search: "",
       visibility: "all",
     };
   },
@@ -45,18 +44,7 @@ export default {
       }
     },
   },
-  watch: {
-    search: {
-      deep: true,
-      handler(n, o) {
-        if (o != n) {
-          //this.todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-          this.handleSearch();
-        }
-        // this.handleSearch();
-      },
-    },
-  },
+
   methods: {
     saveTodos(todos) {
       this.todos = [...todos];
@@ -64,13 +52,8 @@ export default {
     checkVisibility(value) {
       this.visibility = value;
     },
-    handleSearch() {
-      let todos = JSON.parse(localStorage.getItem(this.$STORAGE_KEY));
-      if (todos && todos.length) {
-        this.todos = todos.filter((todo) => {
-          return todo.title.match(this.search);
-        });
-      }
+    embedMatchedData(matchedData) {
+      this.todos = matchedData;
     },
   },
 };

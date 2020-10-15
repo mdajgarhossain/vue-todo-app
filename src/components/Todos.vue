@@ -10,7 +10,12 @@
         }"
       >
         <div class="view">
-          <input class="toggle" type="checkbox" v-model="todo.completed" />
+          <input
+            @change="test"
+            class="toggle"
+            type="checkbox"
+            v-model="todo.completed"
+          />
           <label v-on:dblclick="editTodo(todo)">{{ todo.title }}</label>
           <button class="destroy" v-on:click="removeTodo(todo)"></button>
         </div>
@@ -48,16 +53,19 @@ export default {
       editedTodo: null,
     };
   },
-  watch: {
-    filteredTodos: {
-      deep: true,
-      handler(newValue) {
-        console.log(newValue);
-        localStorage.setItem(this.$STORAGE_KEY, JSON.stringify(this.todos));
-      },
-    },
-  },
+  // watch: {
+  //   filteredTodos: {
+  //     deep: true,
+  //     handler(newValue) {
+  //       console.log(newValue);
+  //       //localStorage.setItem(this.$STORAGE_KEY, JSON.stringify(this.todos));
+  //     },
+  //   },
+  // },
   methods: {
+    test() {
+      console.log("object");
+    },
     editTodo(todo) {
       this.editedTodo = todo;
     },
