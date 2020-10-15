@@ -5,35 +5,8 @@
       <span>{{ search }}</span> -->
 
       <Header @save-todos="saveTodos" :todos="todos" />
-      <Todos :todos="todos" />
-      <footer class="footer">
-        <ul class="filters">
-          <li>
-            <a
-              href="#"
-              v-on:click.prevent="visibility = 'all'"
-              :class="{ selected: visibility == 'all' }"
-              >All</a
-            >
-          </li>
-          <li>
-            <a
-              href="#"
-              v-on:click.prevent="visibility = 'active'"
-              :class="{ selected: visibility == 'active' }"
-              >Active</a
-            >
-          </li>
-          <li>
-            <a
-              href="#"
-              v-on:click.prevent="visibility = 'completed'"
-              :class="{ selected: visibility == 'completed' }"
-              >Completed</a
-            >
-          </li>
-        </ul>
-      </footer>
+      <Todos :todos="todos" :filteredTodos="filteredTodos" />
+      <Footer @handleClick="checkVisibility" :todos="todos" />
     </section>
   </div>
 </template>
@@ -41,19 +14,20 @@
 <script>
 import Header from "./components/Header";
 import Todos from "./components/Todos";
+import Footer from "./components/Footer";
 
-// const STORAGE_KEY = "todo-storage";
 export default {
   name: "App",
   components: {
     Header,
     Todos,
+    Footer,
   },
   data() {
     return {
       todos: [],
-      visibility: "all",
       search: "",
+      visibility: "all",
     };
   },
   created() {
@@ -82,20 +56,13 @@ export default {
         // this.handleSearch();
       },
     },
-    // todos: {
-    //   deep: true,
-    //   handler(n, o) {
-    //     // console.log(newValue);
-    //     if(o != n) {
-    //       this.saveTodoItems();
-    //     }
-
-    //   },
-    // },
   },
   methods: {
     saveTodos(todos) {
       this.todos = [...todos];
+    },
+    checkVisibility(value) {
+      this.visibility = value;
     },
     handleSearch() {
       let todos = JSON.parse(localStorage.getItem(this.$STORAGE_KEY));

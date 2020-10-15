@@ -2,7 +2,7 @@
   <section class="main">
     <ul class="todo-list">
       <li
-        v-for="todo in todos"
+        v-for="todo in filteredTodos"
         v-bind:key="todo.id"
         v-bind:class="{
           completed: todo.completed,
@@ -18,8 +18,8 @@
           class="edit"
           type="text"
           v-model="todo.title"
-          v-on:blur="doneEdit(todo)"
-          v-on:keyup.enter="doneEdit(todo)"
+          v-on:blur="completeEdit(todo)"
+          v-on:keyup.enter="completeEdit(todo)"
         />
       </li>
     </ul>
@@ -36,17 +36,32 @@ export default {
         return [];
       },
     },
+    filteredTodos: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
   },
   data() {
     return {
       editedTodo: null,
     };
   },
+  watch: {
+    filteredTodos: {
+      deep: true,
+      handler(newValue) {
+        console.log(newValue);
+        localStorage.setItem(this.$STORAGE_KEY, JSON.stringify(this.todos));
+      },
+    },
+  },
   methods: {
     editTodo(todo) {
       this.editedTodo = todo;
     },
-    doneEdit(todo) {
+    completeEdit(todo) {
       if (!this.editedTodo) {
         return;
       }
