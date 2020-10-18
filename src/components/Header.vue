@@ -1,8 +1,12 @@
 <template>
   <header class="header">
-    <h1>todos</h1>
+    <h1
+      class="app-title display-3 font-weight-bold font-italic text-muted text-center"
+    >
+      todos
+    </h1>
     <input
-      class="new-todo"
+      class="new-todo p-3 border bg-light"
       placeholder="What needs to be done?"
       @blur="addTodo"
       @keyup.enter="addTodo"
@@ -79,4 +83,11 @@ export default {
 </script>
 
 <style>
+.app-title {
+  color: #40c1a2;
+}
+.new-todo {
+  width: 400px;
+  font-size: 25px;
+}
 </style>

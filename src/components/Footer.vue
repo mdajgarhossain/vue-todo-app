@@ -1,6 +1,6 @@
 <template>
-  <footer class="footer">
-    <ul class="filters">
+  <footer class="footer border-top p-2 justify-self-center">
+    <ul class="filters d-flex justify-content-center justify-content-around">
       <li>
         <a
           href="#"
@@ -52,4 +52,9 @@ export default {
 </script>
 
 <style>
+.filters {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
 </style>

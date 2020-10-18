@@ -8,19 +8,33 @@
           completed: todo.completed,
           editing: todo == editedTodo,
         }"
+        class="border"
       >
-        <div class="view">
+        <div
+          v-if="todo !== editedTodo"
+          class="view d-flex justify-content-between align-items-center pl-3 pr-3"
+        >
           <input
             @change="checkTodoStatus()"
             class="toggle"
             type="checkbox"
             v-model="todo.completed"
           />
-          <label v-on:dblclick="editTodo(todo)">{{ todo.title }}</label>
-          <button class="destroy" v-on:click="removeTodo(todo)"></button>
+          <label class="w-100 text-center" v-on:dblclick="editTodo(todo)">{{
+            todo.title
+          }}</label>
+          <button
+            type="button"
+            class="destroy close"
+            aria-label="Close"
+            v-on:click="removeTodo(todo)"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
         <input
-          class="edit"
+          v-if="todo == editedTodo"
+          class="edit w-100"
           type="text"
           v-model="todo.title"
           v-on:blur="completeEdit(todo)"
@@ -51,13 +65,10 @@ export default {
   data() {
     return {
       editedTodo: null,
-      // toggle: false,
     };
   },
   methods: {
     checkTodoStatus() {
-      // console.log(todo);
-      // this.toggle = true;
       localStorage.setItem(this.$STORAGE_KEY, JSON.stringify(this.todos));
     },
     editTodo(todo) {
@@ -83,4 +94,33 @@ export default {
 </script>
 
 <style>
+.todo-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.todo-list li {
+  font-size: 28px;
+}
+.todo-list li .toggle {
+  width: 20px;
+  height: 20px;
+}
+.todo-list li.completed label {
+  color: #d9d9d9;
+  text-decoration: line-through;
+}
+.todo-list li.editing {
+  border-bottom: none;
+  padding: 0;
+}
+.todo-list li.editing .view {
+  display: none;
+}
+.todo-list li.editing .edit {
+  display: block;
+}
+.todo-list li .edit {
+  display: none;
+}
 </style>

@@ -1,10 +1,12 @@
 <template>
   <div id="app">
-    <section class="todoapp">
-      <Search @searchMatchedData="embedMatchedData" />
-      <Header @save-todos="saveTodos" :todos="todos" />
-      <Todos :todos="todos" :filteredTodos="filteredTodos" />
-      <Footer @handleClick="checkVisibility" :todos="todos" />
+    <section class="container d-flex justify-content-center mt-3 pt-3">
+      <div class="all-components shadow p-3 mb-5 bg-white rounded">
+        <Search @searchMatchedData="embedMatchedData" />
+        <Header @save-todos="saveTodos" :todos="todos" />
+        <Todos :todos="todos" :filteredTodos="filteredTodos" />
+        <Footer @handleClick="checkVisibility" :todos="todos" />
+      </div>
     </section>
   </div>
 </template>
@@ -60,5 +62,14 @@ export default {
 </script>
 
 <style>
-@import "../src/assets/app.css";
+/* @import "../src/assets/app.css"; */
+html,
+#app {
+  margin: 0;
+  padding: 0;
+  /* background: #d0e6ff; */
+}
+.all-components {
+  /* background: #46529c; */
+}
 </style>
