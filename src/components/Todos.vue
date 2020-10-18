@@ -11,7 +11,7 @@
       >
         <div class="view">
           <input
-            @change="test"
+            @change="checkTodoStatus()"
             class="toggle"
             type="checkbox"
             v-model="todo.completed"
@@ -51,20 +51,14 @@ export default {
   data() {
     return {
       editedTodo: null,
+      // toggle: false,
     };
   },
-  // watch: {
-  //   filteredTodos: {
-  //     deep: true,
-  //     handler(newValue) {
-  //       console.log(newValue);
-  //       //localStorage.setItem(this.$STORAGE_KEY, JSON.stringify(this.todos));
-  //     },
-  //   },
-  // },
   methods: {
-    test() {
-      console.log("object");
+    checkTodoStatus() {
+      // console.log(todo);
+      // this.toggle = true;
+      localStorage.setItem(this.$STORAGE_KEY, JSON.stringify(this.todos));
     },
     editTodo(todo) {
       this.editedTodo = todo;

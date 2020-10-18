@@ -34,7 +34,7 @@ export default {
   computed: {
     saveablData() {
       return {
-        // id: this.todos.length,
+        id: this.todos.length + 1,
         title: this.newTodo,
         completed: false,
       };
