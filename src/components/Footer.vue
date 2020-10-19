@@ -1,6 +1,6 @@
 <template>
-  <footer class="footer border-top p-2 justify-self-center">
-    <ul class="filters d-flex justify-content-center justify-content-around">
+  <footer class="footer border-top" v-if="todos.length">
+    <ul class="filters d-flex justify-content-center mt-3">
       <li>
         <a
           href="#"
@@ -39,13 +39,16 @@ export default {
         return [];
       },
     },
-    visibility: {
-      type: String,
-    },
+  },
+  data() {
+    return {
+      visibility: "all",
+    };
   },
   methods: {
     handleClick(value) {
-      this.$emit("handleClick", value);
+      this.$emit("handle-click", value);
+      this.visibility = value;
     },
   },
 };
@@ -53,8 +56,20 @@ export default {
 
 <style>
 .filters {
-  margin: 0;
-  padding: 0;
   list-style: none;
+}
+.filters li {
+  margin-right: 15px;
+}
+.filters li a {
+  color: gray;
+  padding: 3px 7px;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: 3px;
+}
+.filters li a.selected,
+.filters li a:hover {
+  border: 1px solid gray;
 }
 </style>

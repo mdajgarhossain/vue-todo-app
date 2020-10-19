@@ -1,10 +1,5 @@
 <template>
   <header class="header">
-    <h1
-      class="app-title display-3 font-weight-bold font-italic text-muted text-center"
-    >
-      todos
-    </h1>
     <input
       class="new-todo p-3 border bg-light"
       placeholder="What needs to be done?"
@@ -13,8 +8,9 @@
       v-model="newTodo"
       autofocus
     />
-    <p v-show="!error">{{ newTodo }}</p>
-    <p v-show="error" class="warning">This item is already exist</p>
+    <div v-show="error" class="alert alert-warning text-danger" role="alert">
+      This item is already exist!
+    </div>
   </header>
 </template>
 
@@ -38,7 +34,7 @@ export default {
   computed: {
     saveablData() {
       return {
-        id: this.todos.length + 1,
+        // id: this.todos.length + 1,
         title: this.newTodo,
         completed: false,
       };
@@ -72,7 +68,7 @@ export default {
     },
     saveTodoItems() {
       let todos = JSON.parse(localStorage.getItem(this.$STORAGE_KEY) || "[]");
-      todos.push(this.saveablData);
+      todos.unshift(this.saveablData);
       localStorage.setItem(this.$STORAGE_KEY, JSON.stringify(todos));
       //this.todos = todos;
       this.newTodo = "";
@@ -82,12 +78,13 @@ export default {
 };
 </script>
 
-<style>
-.app-title {
-  color: #40c1a2;
-}
+<style scoped>
 .new-todo {
   width: 400px;
   font-size: 25px;
+}
+.header input::-webkit-input-placeholder {
+  color: #c5bcbc;
+  font-style: italic;
 }
 </style>

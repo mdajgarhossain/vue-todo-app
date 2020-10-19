@@ -86,8 +86,13 @@ export default {
       localStorage.setItem(this.$STORAGE_KEY, JSON.stringify(this.todos));
     },
     removeTodo(todo) {
-      this.todos.splice(this.todos.indexOf(todo), 1);
-      localStorage.setItem(this.$STORAGE_KEY, JSON.stringify(this.todos));
+      const returnedValue = confirm("Are you sure to delete this item?");
+      if (returnedValue == true) {
+        this.todos.splice(this.todos.indexOf(todo), 1);
+        localStorage.setItem(this.$STORAGE_KEY, JSON.stringify(this.todos));
+      } else {
+        return;
+      }
     },
   },
 };
@@ -103,8 +108,8 @@ export default {
   font-size: 28px;
 }
 .todo-list li .toggle {
-  width: 20px;
-  height: 20px;
+  width: 23px;
+  height: 23px;
 }
 .todo-list li.completed label {
   color: #d9d9d9;
@@ -122,5 +127,8 @@ export default {
 }
 .todo-list li .edit {
   display: none;
+}
+.todo-list li .destroy:focus {
+  outline-style: none;
 }
 </style>

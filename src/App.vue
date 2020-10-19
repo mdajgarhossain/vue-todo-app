@@ -1,11 +1,16 @@
 <template>
   <div id="app">
-    <section class="container d-flex justify-content-center mt-3 pt-3">
+    <section class="container d-flex justify-content-sm-center mt-3 pt-3">
       <div class="all-components shadow p-3 mb-5 bg-white rounded">
-        <Search @searchMatchedData="embedMatchedData" />
+        <h1
+          class="app-title display-3 font-weight-bold font-italic text-muted text-center"
+        >
+          todos
+        </h1>
+        <Search :hasTodo="hasTodo" @search-matched-data="embedMatchedData" />
         <Header @save-todos="saveTodos" :todos="todos" />
         <Todos :todos="todos" :filteredTodos="filteredTodos" />
-        <Footer @handleClick="checkVisibility" :todos="todos" />
+        <Footer @handle-click="checkVisibility" :todos="todos" />
       </div>
     </section>
   </div>
@@ -29,6 +34,9 @@ export default {
     return {
       todos: [],
       visibility: "all",
+      date: "",
+      time: "",
+      hasTodo: false,
     };
   },
   created() {
@@ -46,7 +54,19 @@ export default {
       }
     },
   },
-
+  watch: {
+    todos: {
+      immediate: true,
+      deep: true,
+      handler() {
+        if (this.todos && this.todos.length) {
+          this.hasTodo = true;
+        } else {
+          this.hasTodo = false;
+        }
+      },
+    },
+  },
   methods: {
     saveTodos(todos) {
       this.todos = [...todos];
@@ -62,14 +82,9 @@ export default {
 </script>
 
 <style>
-/* @import "../src/assets/app.css"; */
 html,
 #app {
   margin: 0;
   padding: 0;
-  /* background: #d0e6ff; */
-}
-.all-components {
-  /* background: #46529c; */
 }
 </style>
