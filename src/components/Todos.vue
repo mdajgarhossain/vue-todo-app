@@ -106,13 +106,14 @@ export default {
 }
 .todo-list li {
   font-size: 28px;
+  background: #f8f9fa;
 }
 .todo-list li .toggle {
   width: 23px;
   height: 23px;
 }
 .todo-list li.completed label {
-  color: #d9d9d9;
+  color: #beb6b6;
   text-decoration: line-through;
 }
 .todo-list li.editing {

@@ -86,5 +86,6 @@ html,
 #app {
   margin: 0;
   padding: 0;
+  background: #f8f9fa;
 }
 </style>

@@ -34,7 +34,6 @@ export default {
   computed: {
     saveablData() {
       return {
-        // id: this.todos.length + 1,
         title: this.newTodo,
         completed: false,
       };
@@ -63,14 +62,12 @@ export default {
           }
         }
         this.saveTodoItems();
-        //this.todos.push(this.saveablData);
       }
     },
     saveTodoItems() {
       let todos = JSON.parse(localStorage.getItem(this.$STORAGE_KEY) || "[]");
       todos.unshift(this.saveablData);
       localStorage.setItem(this.$STORAGE_KEY, JSON.stringify(todos));
-      //this.todos = todos;
       this.newTodo = "";
       this.$emit("save-todos", todos);
     },
